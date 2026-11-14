@@ -88,7 +88,7 @@ body.all .st.on{opacity:1}
 body{height:100vh;overflow:hidden}
 .app{display:grid;grid-template-columns:minmax(0,1.75fr) minmax(360px,1fr);min-height:0}
 .vis{overflow:auto;display:flex;flex-direction:column;min-height:0}
-.slide{max-width:calc((100vh - 120px) * 1600 / var(--h))}
+.slide{flex:none;max-width:calc((100vh - 120px) * 1600 / var(--h))}
 .txt{border-left:1px solid #e4e6ea;min-height:0}
 }
 @media not all and (min-width:1000px) and (min-aspect-ratio:5/4){
@@ -116,7 +116,7 @@ const hp=new URLSearchParams(location.hash.slice(1));
 const solo=hp.get('solo')==='1';if(solo)b.classList.add('solo');
 let cur=1;
 const wide=()=>matchMedia('(min-width:1000px) and (min-aspect-ratio:5/4)').matches;
-function fit(){const sl=$('.slide');if(solo||!sl)return;if(wide()){const t=sl.getBoundingClientRect().top+scrollY;sl.style.maxWidth='calc((100vh - '+Math.round(t+12)+'px) * 1600 / '+H+')'}else sl.style.maxWidth=''}
+function fit(){const sl=$('.slide');if(solo||!sl)return;if(wide()){const t=sl.getBoundingClientRect().top+scrollY,g=$('.goal'),gh=g?g.getBoundingClientRect().height+10:0;sl.style.maxWidth='calc((100vh - '+Math.round(t+gh+12)+'px) * 1600 / '+H+')'}else sl.style.maxWidth=''}
 function set(k){k=Math.max(1,Math.min(N,(k|0)||1));cur=k;
 $$('[data-s]').forEach(e=>{const s=+e.dataset.s;e.classList.toggle('on',s===k);e.classList.toggle('done',s<k);e.classList.toggle('known',s<k&&e.dataset.keep==='1')});
 const c=$('#cnt');if(c)c.textContent='Adım '+k+' / '+N;
@@ -130,7 +130,7 @@ pv&&pv.addEventListener('click',()=>{if(cur===1&&PREV)location.href=PREV+'#s=las
 nx&&nx.addEventListener('click',()=>{if(cur===N&&NEXT)location.href=NEXT;else set(cur+1)});
 addEventListener('keydown',e=>{if(e.target&&e.target.closest&&e.target.closest('input,textarea,select'))return;if(e.key==='ArrowRight'){e.preventDefault();nx&&!nx.disabled&&nx.click()}else if(e.key==='ArrowLeft'){e.preventDefault();pv&&!pv.disabled&&pv.click()}});
 const al=$('#all');if(al){try{if(localStorage.getItem('ed2all')==='1'){al.checked=true;b.classList.add('all')}}catch(e){}al.addEventListener('change',()=>{b.classList.toggle('all',al.checked);try{localStorage.setItem('ed2all',al.checked?'1':'0')}catch(e){}set(cur)})}
-addEventListener('resize',fit);fit();
+addEventListener('resize',fit);fit();fit();
 const hs=hp.get('s');set(hs==='last'?N:(+hs||1));
 })();
 </script>
