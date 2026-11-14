@@ -28,7 +28,7 @@ nav.top .dk{font-weight:600;margin:0 6px 0 4px;color:#555}
 .slide>.pic{position:absolute;inset:0;background-size:100% 100%;background-repeat:no-repeat}
 .qv{flex:none;position:relative;width:100%;max-width:calc(var(--qmax) * 1600 / var(--qh));margin:0 auto 6px;aspect-ratio:1600/var(--qh);overflow:hidden;border-radius:6px;box-shadow:0 0 0 1px #e4e6ea;background:#fff}
 .qv .slide{position:absolute;left:0;top:0;width:100%}
-.qv{cursor:zoom-in}.qv.big{--qmax:86vh;cursor:zoom-out;z-index:5}
+.qv.solo-q{--qmax:calc(100vh - 150px);cursor:default}.qv{cursor:zoom-in}.qv.big{--qmax:86vh;cursor:zoom-out;z-index:5}
 :root{--qmax:38vh}
 .ov{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
 .hl{fill:var(--c);opacity:.07;mix-blend-mode:multiply;cursor:pointer;transition:opacity .2s}
@@ -126,7 +126,7 @@ body.solo .slide{width:1600px;max-width:none;border-radius:0;box-shadow:none}
 </div>
 <script>
 (()=>{
-const N=10,NEXT="mt2025-Q2.html",PREV="mt2024-Q4.html",H=3024;
+const N=10,NEXT="mt2025-Q2.html",PREV="sec-P5.html",H=3024;
 const b=document.body,$=s=>document.querySelector(s),$$=s=>document.querySelectorAll(s);
 const hp=new URLSearchParams(location.hash.slice(1));
 const solo=hp.get('solo')==='1';if(solo)b.classList.add('solo');
@@ -149,7 +149,7 @@ pv&&pv.addEventListener('click',()=>{if(cur===1&&PREV)location.href=PREV+'#s=las
 nx&&nx.addEventListener('click',()=>{if(cur===N&&NEXT)location.href=NEXT;else set(cur+1)});
 addEventListener('keydown',e=>{if(e.target&&e.target.closest&&e.target.closest('input,textarea,select'))return;if(e.key==='ArrowRight'){e.preventDefault();nx&&!nx.disabled&&nx.click()}else if(e.key==='ArrowLeft'){e.preventDefault();pv&&!pv.disabled&&pv.click()}});
 const al=$('#all');if(al){try{if(localStorage.getItem('ematall')==='1'){al.checked=true;b.classList.add('all')}}catch(e){}al.addEventListener('change',()=>{b.classList.toggle('all',al.checked);try{localStorage.setItem('ematall',al.checked?'1':'0')}catch(e){}set(cur)})}
-const qv=$('.qv');qv&&qv.addEventListener('click',()=>qv.classList.toggle('big'));addEventListener('resize',()=>{fit();shrink()});fit();
+const qv=$('.qv');qv&&!qv.classList.contains('solo-q')&&qv.addEventListener('click',()=>qv.classList.toggle('big'));addEventListener('resize',()=>{fit();shrink()});fit();
 const hs=hp.get('s');set(hs==='last'?N:(+hs||1));
 })();
 </script>
