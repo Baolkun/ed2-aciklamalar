@@ -78,7 +78,7 @@ nav.top .dk{font-weight:600;margin:0 6px 0 4px;color:#555}
 .try .tm{font-size:14.5px;margin-top:6px}.try .tm.ok{color:#1d6b3e;font-weight:600}.try .tm.no{color:#a12b2b}
 .try .th{display:none;font-size:14px;color:#4a515a;margin-top:6px;background:#fff6e5;border-radius:6px;padding:5px 9px}.try.hint .th{display:block}
 .st:not(.lk) .try .ta,.st:not(.lk) .try .th{display:none}
-.cv{display:none;fill:#eef1f5;stroke:#c5cbd3;stroke-width:2}.cv.lk{display:block}
+.cv{display:none;fill:#eef1f5;stroke:#c5cbd3;stroke-width:2}.cv.lk,.cv.fu{display:block}
 .d.lk{visibility:hidden}.st.lk .tt,.chip.lk .tt{display:none}.st:not(.lk) .tl,.chip:not(.lk) .tl{display:none}.tl{font-style:italic}
 body.all .st{display:block;opacity:.5;cursor:pointer}
 body.all .st.on{opacity:1}
@@ -148,10 +148,11 @@ const ok=a===0?Math.abs(x)<=1e-9:Math.abs(x-a)<=tol*Math.abs(a);if(ok)unlock(s,'
 t.querySelector('.tk').addEventListener('click',e=>{e.stopPropagation();go()});inp.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();go()}})}
 else t.querySelectorAll('.tc').forEach(bn=>bn.addEventListener('click',e=>{e.stopPropagation();if(+bn.dataset.i===a){bn.classList.add('yes');unlock(s,'Doğru! Açıklama aşağıda.',true)}else{bn.classList.add('no');wrong('Bu değil. Tekrar dene.')}}));
 t.querySelector('.ts').addEventListener('click',e=>{e.stopPropagation();const c=t.querySelector('.tc[data-i="'+a+'"]');c&&c.classList.add('yes');unlock(s,t.dataset.kind==='num'?'Cevap: '+(+a.toPrecision(4))+'. Açıklamayı oku, sonraki adımı kendin dene.':'Doğru şık işaretlendi. Açıklamayı oku.',false)})});
-const AW=[...LK];
-function showAll(on){AW.forEach(s=>{const a=$('.st[data-s="'+s+'"]');if(!a)return;if(on&&a.classList.contains('lk')){a.classList.remove('lk');a.classList.add('rv');LK.delete(s)}else if(!on&&a.classList.contains('rv')){a.classList.remove('rv');a.classList.add('lk');LK.add(s)}});lock();shrink()}
+let SEEN=1;const AW=[...LK];
+function showAll(on){AW.forEach(s=>{const a=$('.st[data-s="'+s+'"]');if(!a)return;if(on&&a.classList.contains('lk')){a.classList.remove('lk');a.classList.add('rv');LK.delete(s)}else if(!on&&a.classList.contains('rv')){a.classList.remove('rv');a.classList.add('lk');LK.add(s)}});lock();rvu();shrink()}
 const an=$('#ans');if(an){try{if(localStorage.getItem('ed2ans')==='1'){an.checked=true;showAll(true)}}catch(e){}an.addEventListener('change',()=>{showAll(an.checked);try{localStorage.setItem('ed2ans',an.checked?'1':'0')}catch(e){}})}
-function set(k){k=Math.max(1,Math.min(N,(k|0)||1));cur=k;
+function rvu(){const o=b.classList.contains('all')||(an&&an.checked);$$('.cv.rv').forEach(e=>e.classList.toggle('fu',!o&&+e.dataset.s>SEEN))}
+function set(k){k=Math.max(1,Math.min(N,(k|0)||1));cur=k;SEEN=Math.max(SEEN,k);rvu();
 $$('[data-s]').forEach(e=>{const s=+e.dataset.s;e.classList.toggle('on',s===k);e.classList.toggle('done',s<k);e.classList.toggle('known',s<k&&e.dataset.keep==='1')});lock();
 const c=$('#cnt');if(c)c.textContent='Adım '+k+' / '+N;
 const p=$('#prev');if(p){p.textContent=(k===1&&PREV)?'‹ Önceki sayfa':'◀ Önceki';p.disabled=(k===1&&!PREV)}
